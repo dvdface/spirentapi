@@ -10,6 +10,8 @@ from typing import Optional, Union, Any
 from .tclwrapper import *
 from .utils import *
 
+# logging
+logger = logging.getLogger(__name__)
 
 # Check Tcl/Tk Setting
 TCLSHDIR = shutil.which('tclsh')
@@ -30,7 +32,7 @@ class SpirentAPI:
         """HLTAPI initialization function
         """
         # initializate tclsh
-        logging.getLogger().info('start tcl process')
+        logger.info('start tcl process')
         self._tclsh = TCLWrapper(TCLSHDIR)
         self._tclsh.start()
 
@@ -39,15 +41,15 @@ class SpirentAPI:
         self.install("ip")
 
         # init Spirent TestCenter Library
-        logging.getLogger().info('lappend auto_path {%s}' % SPIRENTTESTCENTERDIR)
+        logger.info('lappend auto_path {%s}' % SPIRENTTESTCENTERDIR)
         self._tclsh.eval('lappend auto_path {%s}' % SPIRENTTESTCENTERDIR)
 
         # load SpirentTestCenter, stc::
-        logging.getLogger().info('package require SpirentTestCenter')
+        logger.info('package require SpirentTestCenter')
         self._tclsh.eval('package require SpirentTestCenter')
         
         # load SpirentHltApi, sth::
-        logging.getLogger().info('package require SpirentHltApi')
+        logger.info('package require SpirentHltApi')
         self._tclsh.eval('package require SpirentHltApi')
 
         # dynamically make sth:: function
@@ -56,11 +58,11 @@ class SpirentAPI:
     def __del__(self) -> None:
         """shut down tcl process
         """
-        logging.getLogger().info('shutdown tcl process')
+        logger.info('shutdown tcl process')
         if self._tclsh != None:          # stop Tcl shell
             self._tclsh.stop()
             self._tclsh = None
-            logging.getLogger().info('tclsh process stopped')
+            logger.info('tclsh process stopped')
 
     def install(self,  package_name:str) -> None:
         """check if package is installed, if not, install it
@@ -75,7 +77,7 @@ class SpirentAPI:
 
         assert type(package_name) == str, 'package_name should be str type'
 
-        logging.getLogger().info('check and install package: %s'  % package_name)
+        logger.info('check and install package: %s'  % package_name)
 
         try:
             self._tclsh.eval(
@@ -87,10 +89,10 @@ class SpirentAPI:
 
         except TCLWrapperInstanceError as error:
 
-            logging.getLogger().critical(error)
+            logger.critical(error)
             errorMsg = "fail to install package: %s(GFW will prevent you installing packages by TEACUP)" % package_name
             
-            logging.getLogger().critical(errorMsg)
+            logger.critical(errorMsg)
             raise RuntimeError(errorMsg)
 
     def eval(self, cmd: Union[str,list[str]]) -> Union[str, list[str]]:
@@ -116,10 +118,10 @@ class SpirentAPI:
 
                 assert type(c) == str, "command in list must be str type"
 
-                logging.getLogger().info(c)
+                logger.info(c)
                 ret_ = remove_empty_lines(self._tclsh.eval(c))
                 
-                logging.getLogger().debug(ret_)
+                logger.debug(ret_)
                 ret.append(ret_)
             
             return ret
@@ -127,10 +129,10 @@ class SpirentAPI:
         elif type(cmd) == str:
 
             # if command is str type, run command directly
-            logging.getLogger().info(cmd)
+            logger.info(cmd)
             ret = remove_empty_lines(self._tclsh.eval(cmd))
 
-            logging.getLogger().debug(ret)
+            logger.debug(ret)
             return ret
 
         else:
@@ -248,7 +250,7 @@ class SpirentAPI:
 
         for api in api_list:
 
-            logging.getLogger().debug('create function: %s' % api)
+            logger.debug('create function: %s' % api)
 
             match = api_exp.match(api)
             assert match != None, 'only support sth:: api: %s' %  api
@@ -259,7 +261,7 @@ class SpirentAPI:
             full_name = api.replace('::', '_')
 
             if getattr(SpirentAPI, full_name, False):
-                logging.getLogger().debug('%s already exists, skip' % full_name)
+                logger.debug('%s already exists, skip' % full_name)
                 continue
 
             setattr(SpirentAPI, full_name, eval("lambda self, **kargs : self._run_api('%s', '%s', **kargs)" % (brief_name, api)))
@@ -286,7 +288,7 @@ class SpirentAPI:
             port_handle = self.eval( 'keylget %s port_handle.%s.%s' % (ret.name, kwargs['device'], port))
             ret.port_handles.append(port_handle)
         
-        logging.getLogger().debug('sth_connect return: %s' % ret)
+        logger.debug('sth_connect return: %s' % ret)
         return ret
 
     def stc_apply(self) -> None:
@@ -393,7 +395,7 @@ class SpirentAPI:
         
             else:
         
-                logging.getLogger().warning("not match: '%s'" % d)
+                logger.warning("not match: '%s'" % d)
         
         return ret
 
