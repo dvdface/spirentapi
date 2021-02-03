@@ -9,8 +9,7 @@ def readme():
     return f.read()
 
 setuptools.setup(
-	
-	name='spirentapi',
+    name='spirentapi',
     version='1.0.0',
     author='Ding Yi',
     author_email='dvdface@hotmail.com',
@@ -18,7 +17,9 @@ setuptools.setup(
     description='wrapper to the Spirent stc::, sth:: api',
     long_description=readme(),
     long_description_content_type='text/markdown',
-    py_modules=['spirentapi'],
+    packages=['spirentapi'],
+    install_requires=['python-dateutil'],
+    tests_require= ['pytest', 'pytest-html'],
     license='MIT',
     classifiers=[
         "Programming Language :: Python :: 3",
