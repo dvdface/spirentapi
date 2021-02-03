@@ -8,25 +8,35 @@
 # how to install
 `pip install spirentapi`
 
+# known issues
+
+Greate FireWall in China may prevent teacup install Tclx and ip pakcages<br/>
+
+Tclx and ip packages are needed by SpirentHltApi<br/>
+
+so, you may need VPN to install Tclx and ip<br/>
+
+you can try to type `teacup install Tclx` and `teacup install ip` in the tclsh to check<br/>
+
 # how to use
-1. install Tcl/Tk<br/>
+1. **install Tcl/Tk<br/>**
    
    visit https://www.activestate.com/products/tcl/downloads/  to install Tcl/Tk<br/>
 
    Spirent TestCenter need 8.5 version<br/>
-2. set PATH environment<br/>
+2. **set PATH environment<br/>**
 
-   set PATH environment, include tcl/tk path <br/>
+   set `PATH` environment, include tcl/tk path <br/>
 
    for example:<br/>
 
-   PATH=C:\Tcl\bin;%PATH%<br/>
-3. install Spirent TestCenter<br/>
+   `PATH=C:\Tcl\bin;%PATH%`<br/>
+3. **install Spirent TestCenter<br/>**
 
    visit Spirent TestCenter Web Portal, download and install Spirent TestCenter<br/>
-4. set SpirentTestCenter environment<br/>
+4. **set SpirentTestCenter environment<br/>**
 
-   set SpirentTestCenter environment<br/>
+   set `SpirentTestCenter` environment<br/>
 
    point to Spirent TestCenter installation directory<br/>
 
@@ -34,12 +44,12 @@
 
    for example:<br/>
 
-      SpirentTestCenter="C:\Program Files\Spirent Communications\Spirent TestCenter 4.95\Spirent TestCenter Application"<br/>
-5. import spirentapi
+      `SpirentTestCenter="C:\Program Files\Spirent Communications\Spirent TestCenter 4.95\Spirent TestCenter Application"`<br/>
+5. **import spirentapi**
     ```
     from spirentapi import SpirentAPI
     ```
-6. use tclsh
+6. **use tclsh**
     ```
     # create SpirentAPI object
     api = SpirentAPI()
@@ -57,7 +67,7 @@
     # shutdown tclsh
     del api
     ```
-7. use stc:: api
+7. **use stc:: api**
     ```
     # create SpirentAPI object
     api = SpirentAPI()
@@ -77,7 +87,7 @@
     # shutdown tclsh
     del api
     ```
-8. use sth:: api
+8. **use sth:: api**
    
    Notes: because sth:: function is dynamically created, so some IDE can't give you hint. If you know how to fix it, tell me(dvdface@hotmail.com)
     ```
