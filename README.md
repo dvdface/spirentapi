@@ -1,4 +1,5 @@
 # changelist
+* 1.0.1,  update brief
 * 1.0.0,  support stc:: sth:: tclsh call
 
 # feedback

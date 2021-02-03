@@ -10,11 +10,11 @@ def readme():
 
 setuptools.setup(
     name='spirentapi',
-    version='1.0.0',
+    version='1.0.1',
     author='Ding Yi',
     author_email='dvdface@hotmail.com',
     url='https://github.com/dvdface/spirentapi',
-    description='wrapper to the Spirent stc::, sth:: api',
+    description='wrapper to the Spirent TestCenter Tcl shell API(stc::, sth::)',
     long_description=readme(),
     long_description_content_type='text/markdown',
     packages=['spirentapi'],
