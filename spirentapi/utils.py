@@ -132,11 +132,15 @@ def remove_empty_lines(lines:str) -> str:
 
     ret = [ ]
 
-    for line in lines.splitlines():
-        if line.strip() != '':
-            ret.append(line)
-    
-    return '\r\n'.join(ret)
+    lines = lines.splitlines()
+    if len(lines) == 1:
+        return lines[0]
+    else:
+        for line in lines:
+            if line.strip() != '':
+                ret.append(line)
+        
+        return '\r\n'.join(ret)
 
 __all__ = [
     

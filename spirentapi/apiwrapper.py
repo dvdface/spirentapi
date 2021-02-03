@@ -111,13 +111,13 @@ class SpirentAPI:
         if type(cmd) == list:
 
             # if command is list type, run command one by one
-            ret = []
+            ret = [ ]
             for c in cmd:
 
                 assert type(c) == str, "command in list must be str type"
 
                 logging.getLogger().info(c)
-                ret_ = self._tclsh.eval(c)
+                ret_ = remove_empty_lines(self._tclsh.eval(c))
                 
                 logging.getLogger().debug(ret_)
                 ret.append(ret_)
@@ -128,7 +128,7 @@ class SpirentAPI:
 
             # if command is str type, run command directly
             logging.getLogger().info(cmd)
-            ret = self._tclsh.eval(cmd)
+            ret = remove_empty_lines(self._tclsh.eval(cmd))
 
             logging.getLogger().debug(ret)
             return ret
