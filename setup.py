@@ -10,7 +10,7 @@ def readme():
 
 setuptools.setup(
     name='spirentapi',
-    version='1.0.1',
+    version='1.2.0',
     author='Ding Yi',
     author_email='dvdface@hotmail.com',
     url='https://github.com/dvdface/spirentapi',
@@ -18,6 +18,7 @@ setuptools.setup(
     long_description=readme(),
     long_description_content_type='text/markdown',
     packages=['spirentapi'],
+    package_data={'spirentapi':['API.TXT']},
     install_requires=['python-dateutil'],
     tests_require= ['pytest', 'pytest-html'],
     license='MIT',

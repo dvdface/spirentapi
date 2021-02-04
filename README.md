@@ -1,4 +1,7 @@
 # changelist
+* 1.2.0,  change function signature to stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> dotdict:
+* 1.1.0,  support convert true/false to bool type, and break children attribute's value to list
+* 1.0.2,  fix missing API.TXT
 * 1.0.1,  update brief
 * 1.0.0,  support stc:: sth:: tclsh call
 
@@ -112,33 +115,35 @@ you can try to type `teacup install Tclx` and `teacup install ip` in the tclsh t
     del api
     ```
 # how to extend
-Sometimes, it's not convenience to access result of sth:: command by dot<br/>
+1. **override default implementation of sth::**<br/>
+   Sometimes, it's not convenience to access result of sth:: command by dot<br/>
 
-for example:<br/>
+   for example:<br/>
 
-```
-conn_ret = api.sth_connect(device='10.182.32.138', port_list='1/1 1/11', break_locks=1)
+   ```
+   conn_ret = api.sth_connect(device='10.182.32.138', port_list='1/1 1/11', break_locks=1)
 
-# access port handle is very unconvenience
-conn_ret['port_handle']['10']['182']['32']['138']['1/1']
+   # access port handle is very unconvenience
+   conn_ret['port_handle']['10']['182']['32']['138']['1/1']
 
-# so you can extend SpirentAPI, add a sth_connect function to override dynamically created function
-class MyExtendedAPI(SpirentAPI):
+   # so you can extend SpirentAPI, add a sth_connect function to override dynamically created function
+   class MyExtendedAPI(SpirentAPI):
 
-   def sth_connect(self, **kwargs):
+      def sth_connect(self, **kwargs):
 
-      assert type(kwargs) == dict
+         # use _run_api to run sth::connect
+         # same as set connect? [ sth::connect ... ]
+         # you can know connect? by ret.name
+         ret = self._run_api('connect', 'sth::connect', **kwargs)
 
-      # use _run_api to run sth::connect
-      # connect is the variable name, based on this name to create a variable to save sth::connect result
-      ret = self._run_api('connect', 'sth::connect', **kwargs)
-
-      # create a special key to save your result
-      ret.port_handles =  [ ]
-      for port in re.split("\s+", kwargs['port_list']):
-         port_handle = self.eval( 'keylget %s port_handle.%s.%s' % (ret.name, kwargs['device'], port))
-         ret.port_handles.append(port_handle)
-        
-      logging.getLogger().debug('sth_connect return: %s' % ret)
-      return ret
-```
+         # create a special key to save your result
+         ret.port_handles =  [ ]
+         for port in re.split("\s+", kwargs['port_list']):
+            port_handle = self.eval( 'keylget %s port_handle.%s.%s' % (ret.name, kwargs['device'], port))
+            ret.port_handles.append(port_handle)
+         
+         logger.debug('sth_connect return: %s' % ret)
+         return ret
+   ```
+2. **add more sth:: functions**<br/>
+	you can modify the API.TXT file under package, add the sth:: function name to it<br/>

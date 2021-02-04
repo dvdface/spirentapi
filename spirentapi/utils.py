@@ -62,7 +62,7 @@ def read_list(file_path:str) -> list:
     
     return ret
 
-def value(data:Union[str, None], max_value:int=None) -> Union[str, int, float, datetime, None]:
+def value(data:Union[str, None], max_value:int=None) -> Union[str, int, float, datetime, bool, None]:
     """convert value in str to other type as possible
     
     for exmaple:
@@ -70,6 +70,7 @@ def value(data:Union[str, None], max_value:int=None) -> Union[str, int, float, d
         turn '1' to 1 of int type
         turn '0xFF' to 255 of int type
         turn '1920-10-1 10:11:11' to datetime type
+        turn 'true' to True, 'false' to False
 
     Args:
         data (str or None): the str value to convert, if None, don't convert, just return
@@ -90,7 +91,9 @@ def value(data:Union[str, None], max_value:int=None) -> Union[str, int, float, d
     
     int_exp = re.compile('^-?(0x|0X)?\d+$')
     float_exp = re.compile('^-?\d+.\d+$')
-    datetime_exp = re.compile("\d{4,4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}")
+    bool_true_exp = re.compile('^[Tt][Rr][Uu][Ee]$')
+    bool_false_exp = re.compile('^[Ff][Aa][Ll][Ss][Ee]$')
+    datetime_exp = re.compile("^\d{4,4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}$")
 
     if int_exp.match(data):
 
@@ -100,12 +103,23 @@ def value(data:Union[str, None], max_value:int=None) -> Union[str, int, float, d
             return 'null'
         else:
             return intValue
+
     elif float_exp.match(data):
 
         return float(data)
+    
+    elif bool_true_exp.match(data):
+
+        return True
+        
+    elif bool_false_exp.match(data):
+
+        return False
+
     elif datetime_exp.match(data):
 
         if data != '0000-00-00 00:00:00':
+            
             return parse(data)
         else:
             return None

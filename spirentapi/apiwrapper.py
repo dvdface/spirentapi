@@ -350,18 +350,26 @@ class SpirentAPI:
 
         self.eval('stc::disconnect %s' % chassisIp)
 
-    def stc_get(self, handle:str, **kwargs) -> dotdict:
+    def stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> dotdict:
         """stc::get
 
         Args:
             handle (str): handle or DDNPath
+            attributes (optional, list[str]): attributes to get
         """
         assert type(handle) == str, 'data should be str type'
 
-        result = self.eval('stc::get %s %s' % (handle, dict_to_opt(kwargs, prefix='-')))
+        attributes_str = ''
+
+        for attribute in attributes:
+        
+            attributes_str = attributes_str + '-%s ' % attribute
+        
+        attributes_str = attributes_str.strip()
+
+        result = self.eval('stc::get %s %s' % (handle, attributes_str))
 
         return self._resolve_pairs(result)
-
 
     def _resolve_pairs(self, data:str) -> dotdict:
         """parse name-value pairs
@@ -386,11 +394,16 @@ class SpirentAPI:
         
                 attr = match.groups()[0].lower().strip()
                 val = value(match.groups()[1].strip())
-        
+
+                # if value is { ... }, strip { }
                 if type(val) == str and val.startswith('{') and val.endswith('}'):
         
                     val = val[1:-1]
-        
+
+                # if attribute is children, convert value to list[str]
+                if attr == 'children' or attr == 'child':
+                    val = re.compile('\s+').split(val)
+
                 ret[attr] = val
         
             else:
@@ -412,7 +425,6 @@ class SpirentAPI:
             assert type(arg) == str, 'arg should be str type'
 
         return remove_empty_lines(self.eval('stc::help %s' % arg if arg != None else ''))
-
 
     def stc_help_list(self, configTypes_or_commands:str, pattern:str='') -> str:
         """stc::help list
