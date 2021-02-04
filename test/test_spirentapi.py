@@ -28,6 +28,16 @@ def test_stc_exception():
     
     assert False
 
+def test_stc_get():
+
+    api = SpirentAPI()
+
+    d = api.stc_get('system1')
+    
+    for k in d.keys():
+        print('--%s--' % k)
+        print(api.stc_get('system1', attributes=[k]))
+
 def test_sth():
     api = SpirentAPI()
 

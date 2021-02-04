@@ -406,13 +406,7 @@ class SpirentAPI:
         else:
             # if get only one attribute
 
-            if attributes[0] == 'children' or attributes[0] == 'child':
-
-                return [ value(v) for v in re.compile('\s+').split(result.strip()) ]
-
-            else:
-                
-                return value(result.strip())
+            return value(result.strip())
 
     def _resolve_pairs(self, data:str) -> dotdict:
         """parse name-value pairs
