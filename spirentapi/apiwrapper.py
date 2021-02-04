@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 from typing import Optional, Union, Any, NoReturn
+from datetime import datetime
 
 from .tclwrapper import *
 from .utils import *
@@ -376,7 +377,7 @@ class SpirentAPI:
 
         self.eval('stc::disconnect %s' % chassisIp)
 
-    def stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> dotdict:
+    def stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> Union[dotdict, str, int, float, bool, datetime]:
         """stc::get
 
         Args:
@@ -398,7 +399,20 @@ class SpirentAPI:
 
         result = self.eval('stc::get %s %s' % (handle, attributes_str))
 
-        return self._resolve_pairs(result)
+        if len(attributes) != 1:
+
+            return self._resolve_pairs(result)
+
+        else:
+            # if get only one attribute
+
+            if attributes[0] == 'children' or attributes[0] == 'child':
+
+                return [ value(v) for v in re.compile('\s+').split(result.strip()) ]
+
+            else:
+                
+                return value(result.strip())
 
     def _resolve_pairs(self, data:str) -> dotdict:
         """parse name-value pairs

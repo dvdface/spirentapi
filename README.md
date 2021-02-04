@@ -1,4 +1,5 @@
 # changelist
+* 1.2.2,  fix bug in stc_get, stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> Union[dotdict, str, int, float, bool, datetime]
 * 1.2.1,  add testcases
 * 1.2.0,  change function signature to stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> dotdict:
 * 1.1.0,  support convert true/false to bool type, and break children attribute's value to list
