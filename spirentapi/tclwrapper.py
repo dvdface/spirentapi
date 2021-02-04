@@ -41,11 +41,13 @@ class TCLWrapperException(Exception):
 
 class TCLWrapperError(TCLWrapperException):
     """tcl command failed."""
+
     def __init__(self, command, error_message, stderr = ''):
         self.command = command
         self.error_message = error_message.strip()
         self.stderr = stderr
         super().__init__(self.__str__())
+
     def __str__(self):
         msg = 'TCLWrapperError raised while executing the command "%s"\n error_message: "%s"' % (self.command, self.error_message)
         if self.stderr:

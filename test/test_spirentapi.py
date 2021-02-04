@@ -14,6 +14,20 @@ def test_stc():
 
     api.stc_disconnect('10.182.32.138')
 
+def test_stc_exception():
+
+    api =SpirentAPI()
+
+    try:
+
+        api.stc_get('sys')
+
+    except TCLWrapperError as e:
+
+        return
+    
+    assert False
+
 def test_sth():
     api = SpirentAPI()
 
@@ -37,10 +51,13 @@ def test_normal_install():
 
     del api
 
-@pytest.mark.xfail(raises=RuntimeError)
 def test_abnormal_install():
 
     api = SpirentAPI()
-    api.install('FOO')
 
-    del api
+    try:
+        api.install('FOO')
+    except RuntimeError as e:
+        return
+
+    assert False
