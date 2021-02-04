@@ -10,7 +10,7 @@ def readme():
 
 setuptools.setup(
     name='spirentapi',
-    version='1.2.0',
+    version='1.2.1',
     author='Ding Yi',
     author_email='dvdface@hotmail.com',
     url='https://github.com/dvdface/spirentapi',
