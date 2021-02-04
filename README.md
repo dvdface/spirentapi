@@ -1,4 +1,5 @@
 # changelist
+* 1.2.3,  fix bug in stc_get
 * 1.2.2,  fix bug in stc_get, stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> Union[dotdict, str, int, float, bool, datetime]
 * 1.2.1,  add testcases
 * 1.2.0,  change function signature to stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> dotdict:

@@ -425,33 +425,19 @@ class SpirentAPI:
         """
         assert type(data) == str, 'data should be str type'
 
-        av_re = re.compile('(\w+)\s(.+)')
+        pair_re = re.compile('\s?-([\w\d\-]+)\s((\{[^{}]+\})|([\S]+))\s?')
 
         ret = dotdict()
-        
-        for d in data.split('-'):
-        
-            match = av_re.match(d)
-        
-            if match != None and len(match.groups()) == 2:
-        
-                attr = match.groups()[0].lower().strip()
-                val = value(match.groups()[1].strip())
 
-                # if value is { ... }, strip { }
-                if type(val) == str and val.startswith('{') and val.endswith('}'):
-        
-                    val = val[1:-1]
+        for t in pair_re.findall(data):
 
-                # if attribute is children, convert value to list[str]
-                if attr == 'children' or attr == 'child':
-                    val = re.compile('\s+').split(val)
+            key, val, _, _ = t
 
-                ret[attr] = val
+            if val.startswith('{') and val.endswith('}'):
+            
+                val = val[1:-1]
         
-            else:
-        
-                logger.warning("not match: '%s'" % d)
+            ret[key] = value(val)
         
         return ret
 
