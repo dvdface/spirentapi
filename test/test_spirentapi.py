@@ -71,3 +71,8 @@ def test_abnormal_install():
         return
 
     assert False
+
+def test_get_None():
+
+    api = SpirentAPI()
+    assert api.stc_get('system1.PhysicalChassisManager', ['children-PhysicalChassis']) == None
