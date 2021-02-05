@@ -1,4 +1,5 @@
 # changelist
+* 1.2.5,  strip space after strip { }; turn '' result to None
 * 1.2.4,  add pytest-cov
 * 1.2.3,  fix bug in stc_get
 * 1.2.2,  fix bug in stc_get, stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> Union[dotdict, str, int, float, bool, datetime]

@@ -66,6 +66,7 @@ def value(data:Union[str, None], max_value:int=None) -> Union[str, int, float, d
     """convert value in str to other type as possible
     
     for exmaple:
+        turn '' to None
         turn '1.0' to 1.0 of float type
         turn '1' to 1 of int type
         turn '0xFF' to 255 of int type
@@ -88,6 +89,9 @@ def value(data:Union[str, None], max_value:int=None) -> Union[str, int, float, d
         assert type(max_value) == int, 'max_value should be int type'
 
     data = data.strip()
+
+    if data == '':
+        return None
     
     int_exp = re.compile('^-?(0x|0X)?\d+$')
     float_exp = re.compile('^-?\d+.\d+$')
