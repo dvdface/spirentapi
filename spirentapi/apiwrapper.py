@@ -429,7 +429,7 @@ class SpirentAPI:
 
             if val.startswith('{') and val.endswith('}'):
             
-                val = val[1:-1]
+                val = val[1:-1].strip()
         
             ret[key] = value(val)
         
