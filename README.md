@@ -1,4 +1,5 @@
 # changelist
+* 1.2.7,  fix bug in stc::get
 * 1.2.6,  add testcase
 * 1.2.5,  strip space after strip { }; turn '' result to None
 * 1.2.4,  add pytest-cov

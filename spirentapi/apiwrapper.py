@@ -419,7 +419,7 @@ class SpirentAPI:
         """
         assert type(data) == str, 'data should be str type'
 
-        pair_re = re.compile('\s?-([\w\d\-]+)\s((\{[^{}]+\})|([\S]+))\s?')
+        pair_re = re.compile('\s?-([\w\d\-\.]+)\s((\{[^{}]+\})|([\S]+))\s?')
 
         ret = dotdict()
 
