@@ -76,3 +76,10 @@ def test_get_None():
 
     api = SpirentAPI()
     assert api.stc_get('system1.PhysicalChassisManager', ['children-PhysicalChassis']) == None
+
+def test_singleton():
+
+    api = SpirentAPI.instance
+    api.x = 1
+    api2 = SpirentAPI.instance
+    assert api2.x == 1

@@ -1,4 +1,5 @@
 # changelist
+* 1.3.0,  add singleton mode, you can use SpirentAPI.instance to get instance
 * 1.2.7,  fix bug in stc::get
 * 1.2.6,  add testcase
 * 1.2.5,  strip space after strip { }; turn '' result to None

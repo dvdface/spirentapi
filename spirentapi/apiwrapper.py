@@ -24,7 +24,20 @@ assert SPIRENTTESTCENTERDIR != None, 'Please setup the environment variable Spir
 assert os.path.exists(os.path.join(SPIRENTTESTCENTERDIR, 'TestCenter.exe')), 'Please setup the SpirentTestCenter environment variable to the parent directory of TestCenter.exe'
 
 
-class SpirentAPI:
+class SpirentAPIMeta(type):
+
+    def __init__(cls, *args, **kwargs) -> NoReturn:
+        cls._instance = None
+    
+    @property
+    def instance(cls):
+        if cls._instance == None:
+            cls._instance = SpirentAPI()
+        
+        return cls._instance
+
+
+class SpirentAPI(metaclass=SpirentAPIMeta):
     """
     Spirent TestCenter API
     """
