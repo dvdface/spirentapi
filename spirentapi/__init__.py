@@ -1,6 +1,6 @@
 from .tclwrapper import TCLWrapper, TCLWrapperError, TCLWrapperException, TCLWrapperInstanceError
 from .apiwrapper import SpirentAPI
-
+from .object import STCObject
 
 __all__ = [
     
@@ -8,5 +8,6 @@ __all__ = [
     'TCLWrapper',
     'TCLWrapperError',
     'TCLWrapperException',
-    'TCLWrapperInstanceError'
+    'TCLWrapperInstanceError',
+    'STCObject'
 ]

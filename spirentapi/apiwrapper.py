@@ -247,7 +247,7 @@ class SpirentAPI(metaclass=SpirentAPIMeta):
 
         except TCLWrapperError as error:
 
-            return value(self.eval('keylget %s %s' % (var, key)))
+            return self.eval('keylget %s %s' % (var, key))
 
     def _make_sth_func(self) -> NoReturn:
         """dynamically create function
@@ -419,7 +419,7 @@ class SpirentAPI(metaclass=SpirentAPIMeta):
         else:
             # if get only one attribute
 
-            return value(result.strip())
+            return result.strip()
 
     def _resolve_pairs(self, data:str) -> dotdict:
         """parse name-value pairs
@@ -444,7 +444,7 @@ class SpirentAPI(metaclass=SpirentAPIMeta):
             
                 val = val[1:-1].strip()
         
-            ret[key] = value(val)
+            ret[key] = val
         
         return ret
 

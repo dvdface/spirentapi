@@ -1,4 +1,6 @@
 # changelist
+* 1.4.0,  add STCObject, you can use this object to wrap handle return by stc_create, stc_get, then you can easily access and set attribute by object[attribute] way
+* 1.3.1,  fix bug: some value is mask, such as 111, 011, should keep it str type, auto convert function can't deal with it, so remove auto convertion to result
 * 1.3.0,  add singleton mode, you can use SpirentAPI.instance to get instance
 * 1.2.7,  fix bug in stc::get
 * 1.2.6,  add testcase
