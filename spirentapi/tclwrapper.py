@@ -3,6 +3,7 @@ import subprocess
 import random
 import warnings
 import string
+import tempfile
 
 _tcl = tk.Tk(useTk = 0)
 
@@ -95,10 +96,15 @@ class TCLWrapper:
         """Start the tcl background process."""
         if self._process:
             raise TCLWrapperInstanceError('tcl instance already running.')
+
+        self._tempfile = tempfile.mktemp()
+        self._tempfile_in = open(self._tempfile, 'wb')
+        self._tempfile_out = open(self._tempfile, 'rb')
+
         self._process = subprocess.Popen(
             [self.tcl_exe] + list(self.tcl_exe_args),
             stdin = subprocess.PIPE,
-            stdout = subprocess.PIPE,
+            stdout = self._tempfile_in,
             stderr = subprocess.PIPE)
         # DON'T NEED IN WINDOWS PLATFORM
         # set stdout and stderr nonblocking to avoid possible deadlock
@@ -120,6 +126,17 @@ class TCLWrapper:
         self._process.kill()
         del self._process
         self._process = None
+
+        # close file to let popen write stdout in
+        if self._tempfile_in != None:
+            self._tempfile_in.close()
+            self._tempfile_in = None
+        
+        # close file to let popen read stdout out
+        if self._tempfile_out != None:
+            self._tempfile_out.close()
+            self._tempfile_out = None
+
 
     def __enter__(self):
         self.start()
@@ -185,7 +202,7 @@ class TCLWrapper:
                 if fetching_stdout:
                     try:
                         # nonblocking reads raise an IOError if there is nothing to read
-                        stdout += self._process.stdout.read1(1)
+                        stdout += self._tempfile_out.read1(1)
                     except IOError:
                         pass
                 if fetching_stderr:
