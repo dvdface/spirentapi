@@ -43,7 +43,7 @@ def test_sth():
 
     conn_ret = api.sth_connect(device='10.182.32.138', port_list='1/1', break_locks=1)
 
-    assert conn_ret.status == 1
+    assert conn_ret.status == '1'
     
     api.sth_cleanup_session()
 

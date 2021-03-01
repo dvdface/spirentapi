@@ -390,7 +390,7 @@ class SpirentAPI(metaclass=SpirentAPIMeta):
 
         self.eval('stc::disconnect %s' % chassisIp)
 
-    def stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> Union[dotdict, str, int, float, bool, datetime]:
+    def stc_get(self, handle:str, attributes:Optional[list[str]]=[]) -> Union[dotdict, str, int, float, bool, datetime, NoReturn]:
         """stc::get
 
         Args:
@@ -419,7 +419,9 @@ class SpirentAPI(metaclass=SpirentAPIMeta):
         else:
             # if get only one attribute
 
-            return result.strip()
+            ret = result.strip()
+            
+            return  None if ret == '' else ret
 
     def _resolve_pairs(self, data:str) -> dotdict:
         """parse name-value pairs

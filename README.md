@@ -1,4 +1,5 @@
 # changelist
+* 1.4.2,  fix stc_get function to return None instead of '' str
 * 1.4.1,  fix deadlock problem when output too many characters in stdout
 * 1.4.0,  add STCObject, you can use this object to wrap handle return by stc_create, stc_get, then you can easily access and set attribute by object[attribute] way
 * 1.3.1,  fix bug: some value is mask, such as 111, 011, should keep it str type, auto convert function can't deal with it, so remove auto convertion to result
@@ -91,6 +92,11 @@ you can try to type `teacup install Tclx` and `teacup install ip` in the tclsh t
     
     # call stc::create, and access result
     project_handle = api.stc_create(objectType='Project', under='system1')
+
+    # use STCObject to wrap handle to access or set attributes
+    project_object = STCObject(project_handle)
+    project_object['Name']
+    project_object['Name'] = 'new name'
     
     # call stc::perform
     api.stc_perform(cmd='SaveAsXml', config=project_handle, filename='test.xml')
