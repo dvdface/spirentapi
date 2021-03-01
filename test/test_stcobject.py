@@ -45,5 +45,14 @@ def test_parent():
     projectObject = STCObject('project1')
     assert projectObject.parent.handle == 'system1'
 
+def test_attributes():
+    systemObject = STCObject('system1')
+    assert 'Active' in systemObject.attributes
+    assert 'Name' in systemObject.attributes
+    assert 'Version' in systemObject.attributes
+    assert 'children' in systemObject.attributes
+
 def test_children():
     systemObject = STCObject('system1')
+    rprObject = STCObject('resultproviderregistry1')
+    print([ child.handle for child in rprObject.children])
