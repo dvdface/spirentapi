@@ -141,8 +141,12 @@ class STCObject:
                 pass
             finally:
                 if guess_handle != None:
-                    SpirentAPI.instance.stc_delete(guess_handle)
-                    return guess_type
+                    try:
+                        SpirentAPI.instance.stc_delete(guess_handle)
+                    except TCLWrapperError as error:
+                        pass
+                    finally:
+                        return guess_type
                 else:
                     index = index - 1
         

@@ -1,4 +1,5 @@
 # changelist
+* 1.4.4,  fix STCObject.type bug
 * 1.4.3,  fix STCObject.type bug
 * 1.4.2,  fix stc_get function to return None instead of '' str
 * 1.4.1,  fix deadlock problem when output too many characters in stdout
