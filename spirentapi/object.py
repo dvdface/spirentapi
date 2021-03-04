@@ -123,34 +123,17 @@ class STCObject:
         Returns:
             str: type of object
         """
-        # bug fix:
-        # use a new way to find type
-        # 1. find parent
-        # 2. try to create object by using handle name until success
-        parent = self.parent
-        index = -1
-        while True:
-            guess_type = self.handle[:index]
-            if guess_type == '':
-                break
+        pattern = re.compile('^([a-zA-Z]+\d*[a-zA-Z]+[46]?:?[a-zA-Z]+\d*[a-zA-Z]+[46]?)(\d+)$')
+      
+        try:
 
-            guess_handle = None
-            try:
-                guess_handle = SpirentAPI.instance.stc_create(guess_type, under=parent)
-            except TCLWrapperError as error:
-                pass
-            finally:
-                if guess_handle != None:
-                    try:
-                        SpirentAPI.instance.stc_delete(guess_handle)
-                    except TCLWrapperError as error:
-                        pass
-                    finally:
-                        return guess_type
-                else:
-                    index = index - 1
-        
-        raise RuntimeError('can\'t find type for %s' % self.handle)
+            type_, suffix = pattern.findall(self.handle)[0]
+
+        except IndexError as error:
+            logger.debug('index error: self.handle')
+            raise error
+
+        return type_.lower()
 
     @property
     def handle(self) -> str:
