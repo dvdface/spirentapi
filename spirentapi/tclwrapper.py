@@ -24,6 +24,10 @@ def list_to_tclstring(in_list):
     return ' '.join(cleaned_up_list)
 
 def nested_list_to_tclstring(nested_list):
+    
+    if not isinstance(nested_list, list):
+        return str(nested_list)
+    
     items = []
     for item in nested_list:
         if isinstance(item, str):
